@@ -1,0 +1,247 @@
+{
+  "project": "AIGC Creative Studio",
+  "branchName": "ralph/liquid-memory-init",
+  "description": "AIGC 创意工坊 - AI 提示词解析与管理工具（Liquid Memory）",
+  "userStories": [
+    {
+      "id": "US-001",
+      "title": "项目初始化与基础架构",
+      "description": "As a developer, I need to set up the project structure with Next.js, Tailwind CSS, and theme system.",
+      "acceptanceCriteria": [
+        "Initialize Next.js 14 project with App Router",
+        "Configure Tailwind CSS with custom design tokens",
+        "Implement dark/light theme system with CSS variables",
+        "Set up project folder structure (app/, components/, lib/, stores/)",
+        "Add essential dependencies (zustand, framer-motion, localforage, d3)",
+        "Typecheck passes"
+      ],
+      "priority": 1,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-002",
+      "title": "轻量级后端 API 代理",
+      "description": "As a user, I need a secure way to call VL APIs without exposing my API key in the browser.",
+      "acceptanceCriteria": [
+        "Create API route /api/analyze for image analysis",
+        "Support Qwen3-VL-plus and Kimi-k2.5 models",
+        "Load API keys from environment variables",
+        "Implement error handling and rate limiting",
+        "Return structured prompt data in consistent format",
+        "Typecheck passes"
+      ],
+      "priority": 2,
+      "passes": false,
+      "notes": "Critical for security - never expose API keys to frontend"
+    },
+    {
+      "id": "US-003",
+      "title": "本地文件存储与缩略图生成",
+      "description": "As a user, I want to upload images and have them stored locally with thumbnails generated.",
+      "acceptanceCriteria": [
+        "Implement drag-and-drop file upload component",
+        "Generate thumbnails (max 300px) using canvas",
+        "Store original images in local filesystem (or IndexedDB as fallback)",
+        "Store thumbnail paths in metadata",
+        "Handle image formats: jpg, png, webp",
+        "Show upload progress and preview",
+        "Typecheck passes"
+      ],
+      "priority": 3,
+      "passes": false,
+      "notes": "Use File System Access API if available, fallback to IndexedDB"
+    },
+    {
+      "id": "US-004",
+      "title": "VL API 图片解析集成",
+      "description": "As a user, I want to analyze uploaded images and get structured prompt breakdowns.",
+      "acceptanceCriteria": [
+        "Send image to /api/analyze endpoint",
+        "Parse VL API response into structured format",
+        "Extract 8 dimensions: subject, environment, composition, lighting, mood, style, camera, color",
+        "Handle API errors gracefully with user-friendly messages",
+        "Show loading state during analysis",
+        "Cache results to avoid re-analyzing same image",
+        "Typecheck passes"
+      ],
+      "priority": 4,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-005",
+      "title": "结构化提示词编辑器",
+      "description": "As a user, I want to view and edit the parsed prompt in a structured form.",
+      "acceptanceCriteria": [
+        "Create editable form with 8 dimension fields",
+        "Real-time preview of natural language prompt",
+        "One-click copy to clipboard for full prompt",
+        "Toggle between structured view and raw text view",
+        "Export as JSON option",
+        "Responsive layout for different screen sizes",
+        "Typecheck passes"
+      ],
+      "priority": 5,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-006",
+      "title": "创意库数据模型与存储",
+      "description": "As a user, I need my creative items saved locally with metadata.",
+      "acceptanceCriteria": [
+        "Define CreativeItem, StructuredPrompt, Tag TypeScript interfaces",
+        "Implement IndexedDB schema using localforage",
+        "Create CRUD operations for creative items",
+        "Auto-save edited prompts",
+        "Store creation and update timestamps",
+        "Handle data migration for future schema changes",
+        "Typecheck passes"
+      ],
+      "priority": 6,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-007",
+      "title": "创意库 UI - 网格与列表视图",
+      "description": "As a user, I want to browse my saved items in grid or list view.",
+      "acceptanceCriteria": [
+        "Implement grid view with thumbnail cards",
+        "Implement list view with detailed info",
+        "Toggle between views",
+        "Empty state when no items",
+        "Infinite scroll or pagination for large collections",
+        "Quick actions on hover (edit, delete, copy)",
+        "Typecheck passes"
+      ],
+      "priority": 7,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-008",
+      "title": "标签系统",
+      "description": "As a user, I want to organize items with custom tags.",
+      "acceptanceCriteria": [
+        "Create tag management interface",
+        "Support tag categories: style, usage, model, mood, custom",
+        "Color-coded tags",
+        "Add/remove tags from items",
+        "Tag autocomplete when typing",
+        "Delete unused tags",
+        "Typecheck passes"
+      ],
+      "priority": 8,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-009",
+      "title": "搜索与筛选功能",
+      "description": "As a user, I want to quickly find items by searching or filtering.",
+      "acceptanceCriteria": [
+        "Fuzzy search across prompt content and tags",
+        "Filter by tag (single or multiple)",
+        "Filter by date range",
+        "Sort by: newest first, oldest first, relevance",
+        "Search results highlight matching terms",
+        "Debounced search input (300ms)",
+        "Typecheck passes"
+      ],
+      "priority": 9,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-010",
+      "title": "词汇网络可视化",
+      "description": "As a user, I want to explore my prompts through an interactive word network.",
+      "acceptanceCriteria": [
+        "Extract keywords from all saved prompts",
+        "Build co-occurrence graph (words that appear together)",
+        "Render force-directed graph using D3.js",
+        "Node size based on word frequency",
+        "Edge thickness based on co-occurrence count",
+        "Click node to see related items",
+        "Double-click to search by that word",
+        "Zoom and pan controls",
+        "Typecheck passes"
+      ],
+      "priority": 10,
+      "passes": false,
+      "notes": "Phase 2 feature - can be deferred if Phase 1 takes longer"
+    },
+    {
+      "id": "US-011",
+      "title": "即梦 API 集成",
+      "description": "As a user, I want to generate images using SeeDream API based on my prompts.",
+      "acceptanceCriteria": [
+        "Add SeeDream API configuration in settings",
+        "Create generation interface with parameter controls",
+        "Support parameters: size, style, seed",
+        "Show generation progress",
+        "Display generated images in results gallery",
+        "Save generated images to local storage",
+        "Typecheck passes"
+      ],
+      "priority": 11,
+      "passes": false,
+      "notes": "Phase 2 feature"
+    },
+    {
+      "id": "US-012",
+      "title": "数据导入导出",
+      "description": "As a user, I want to backup and restore my data.",
+      "acceptanceCriteria": [
+        "Export all data as JSON file",
+        "Include metadata and image references in export",
+        "Import from JSON file",
+        "Validate imported data structure",
+        "Handle import conflicts (duplicate IDs)",
+        "Progress indicator for large imports",
+        "Typecheck passes"
+      ],
+      "priority": 12,
+      "passes": false,
+      "notes": "Phase 2 feature"
+    },
+    {
+      "id": "US-013",
+      "title": "动效与交互优化",
+      "description": "As a user, I want smooth animations and delightful micro-interactions.",
+      "acceptanceCriteria": [
+        "Page transitions with liquid morph effect",
+        "Button hover states with glow effects",
+        "Card hover with border shimmer",
+        "Loading states with liquid wave animation",
+        "Success feedback with particle burst",
+        "Background animated gradient mesh",
+        "Reduced motion support for accessibility",
+        "Typecheck passes"
+      ],
+      "priority": 13,
+      "passes": false,
+      "notes": "Phase 3 feature - polish"
+    },
+    {
+      "id": "US-014",
+      "title": "性能优化",
+      "description": "As a user, I want the app to be fast and responsive even with many items.",
+      "acceptanceCriteria": [
+        "Virtual scrolling for large lists",
+        "Lazy load thumbnails",
+        "Optimize D3.js graph rendering (node limit, clustering)",
+        "Image compression before storage",
+        "Debounce all search inputs",
+        "Memoize expensive computations",
+        "Lighthouse performance score > 80",
+        "Typecheck passes"
+      ],
+      "priority": 14,
+      "passes": false,
+      "notes": "Phase 3 feature - polish"
+    }
+  ]
+}
