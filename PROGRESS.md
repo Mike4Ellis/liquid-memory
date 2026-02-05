@@ -35,9 +35,18 @@
   - [x] Add essential dependencies
   - [x] Typecheck passes
 
-#### ⏳ US-002: 轻量级后端 API 代理
-- **状态**: pending
+#### ✅ US-002: 轻量级后端 API 代理
+- **状态**: completed
+- **负责人**: Mike4Ellis
 - **依赖**: US-001
+- **提交**: (待添加)
+- **验收标准**:
+  - [x] Create API route /api/analyze
+  - [x] Support Qwen3-VL-plus and Kimi-k2.5 models
+  - [x] Load API keys from environment variables
+  - [x] Error handling and rate limiting
+  - [x] Return structured prompt data
+  - [x] Typecheck passes
 
 #### ⏳ US-003: 本地文件存储与缩略图生成
 - **状态**: pending
