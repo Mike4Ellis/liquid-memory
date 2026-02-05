@@ -9,10 +9,12 @@
 
 | 状态 | 数量 |
 |------|------|
-| ✅ 已完成 | 0 |
-| 🔄 进行中 | 1 (US-001) |
+| ✅ 已完成 | 1 |
+| 🔄 进行中 | 0 |
 | ⏳ 待开始 | 13 |
 | 🚫 阻塞中 | 0 |
+
+当前进度：1/14 = 7%
 
 ---
 
@@ -20,18 +22,18 @@
 
 ### Phase 1: Foundation (MVP)
 
-#### 🔄 US-001: 项目初始化与基础架构
-- **状态**: in_progress
+#### ✅ US-001: 项目初始化与基础架构
+- **状态**: completed
 - **负责人**: Gremins
 - **依赖**: -
-- **提交**: -
+- **提交**: 5a85ee0
 - **验收标准**:
-  - [ ] Initialize Next.js 14 project with App Router
-  - [ ] Configure Tailwind CSS with custom design tokens
-  - [ ] Implement dark/light theme system
-  - [ ] Set up project folder structure
-  - [ ] Add essential dependencies
-  - [ ] Typecheck passes
+  - [x] Initialize Next.js 14 project with App Router
+  - [x] Configure Tailwind CSS with custom design tokens
+  - [x] Implement dark/light theme system
+  - [x] Set up project folder structure
+  - [x] Add essential dependencies
+  - [x] Typecheck passes
 
 #### ⏳ US-002: 轻量级后端 API 代理
 - **状态**: pending
