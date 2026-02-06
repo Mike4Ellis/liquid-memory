@@ -152,15 +152,31 @@
   - [x] Results gallery
   - [x] Save to library
 
-#### ⏳ US-012: 数据导入导出
-- **状态**: pending
+#### ✅ US-012: 数据导入导出
+- **状态**: completed
+- **负责人**: Gremins
 - **依赖**: US-006
+- **验收标准**:
+  - [x] Complete JSON export with images
+  - [x] JSON import with validation
+  - [x] CSV export for analysis
+  - [x] Batch delete functionality
+  - [x] Import progress indicator
+  - [x] Conflict handling
 
 ### Phase 3: Polish
 
-#### ⏳ US-013: 动效与交互优化
-- **状态**: pending
+#### ✅ US-013: 动效与交互优化
+- **状态**: completed
+- **负责人**: subagent
 - **依赖**: Phase 1 & 2
+- **验收标准**:
+  - [x] Page transitions with Framer Motion
+  - [x] Button hover glow effects
+  - [x] Card shimmer border effect
+  - [x] Loading wave animation
+  - [x] Success feedback animations
+  - [x] Reduced motion support
 
 #### ⏳ US-014: 性能优化
 - **状态**: pending
