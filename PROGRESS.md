@@ -73,9 +73,17 @@
   - [x] Support Qwen and Kimi models
   - [x] Rate limiting implemented
 
-#### ⏳ US-005: 结构化提示词编辑器
-- **状态**: pending
+#### ✅ US-005: 结构化提示词编辑器
+- **状态**: completed
+- **负责人**: Gremins
 - **依赖**: US-004
+- **验收标准**:
+  - [x] Editable form with 8 dimension fields
+  - [x] Real-time natural language preview
+  - [x] One-click copy to clipboard
+  - [x] Toggle structured/raw view
+  - [x] Export as JSON option
+  - [x] Responsive layout
 
 #### ⏳ US-006: 创意库数据模型与存储
 - **状态**: pending
