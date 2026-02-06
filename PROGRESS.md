@@ -48,9 +48,18 @@
   - [x] Return structured prompt data
   - [x] Typecheck passes
 
-#### ⏳ US-003: 本地文件存储与缩略图生成
-- **状态**: pending
+#### ✅ US-003: 本地文件存储与缩略图生成
+- **状态**: completed
+- **负责人**: Gremins
 - **依赖**: US-001
+- **提交**: (待添加)
+- **验收标准**:
+  - [x] Drag-and-drop upload component
+  - [x] Thumbnail generation (max 300px)
+  - [x] Local filesystem storage (IndexedDB)
+  - [x] Metadata with thumbnail paths
+  - [x] Support jpg/png/webp
+  - [x] Upload progress and preview
 
 #### ⏳ US-004: VL API 图片解析集成
 - **状态**: pending
