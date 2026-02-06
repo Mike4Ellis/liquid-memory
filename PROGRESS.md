@@ -61,9 +61,17 @@
   - [x] Support jpg/png/webp
   - [x] Upload progress and preview
 
-#### ⏳ US-004: VL API 图片解析集成
-- **状态**: pending
+#### ✅ US-004: VL API 图片解析集成
+- **状态**: completed
+- **负责人**: subagent
 - **依赖**: US-002, US-003
+- **验收标准**:
+  - [x] Send image to /api/analyze
+  - [x] Parse response into structured format
+  - [x] Extract 8 dimensions (subject, environment, etc.)
+  - [x] Error handling with user-friendly messages
+  - [x] Support Qwen and Kimi models
+  - [x] Rate limiting implemented
 
 #### ⏳ US-005: 结构化提示词编辑器
 - **状态**: pending
