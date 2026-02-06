@@ -120,9 +120,10 @@ export function PromptEditor({ initialData = {}, imageUrl, onSave }: PromptEdito
             />
             <button
               onClick={handleCopy}
-              className="absolute top-3 right-3 p-2 rounded-lg bg-white/10 hover:bg-white/20 text-white/80 transition-colors"
+              className="absolute top-3 right-3 p-2 rounded-lg bg-white/10 hover:bg-white/20 text-white/80 transition-colors focus-visible:ring-2 focus-visible:ring-cyan-400/50"
+              aria-label={copied ? "Copied to clipboard" : "Copy to clipboard"}
             >
-              {copied ? <Check className="w-4 h-4 text-green-400" /> : <Copy className="w-4 h-4" />}
+              {copied ? <Check className="w-4 h-4 text-green-400" aria-hidden="true" /> : <Copy className="w-4 h-4" aria-hidden="true" />}
             </button>
           </div>
           

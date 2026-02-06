@@ -29,7 +29,7 @@ export function LazyImage({
       },
       {
         rootMargin: '50px',
-        threshold: 0.01
+        threshold: 0.1
       }
     );
 

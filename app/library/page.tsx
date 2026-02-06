@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { 
   Grid3X3, 
   List, 
@@ -29,6 +29,18 @@ import {
   downloadExport
 } from '@/lib/storage';
 
+// Debounce hook
+function useDebounce<T>(value: T, delay: number): T {
+  const [debouncedValue, setDebouncedValue] = useState<T>(value);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setDebouncedValue(value), delay);
+    return () => clearTimeout(timer);
+  }, [value, delay]);
+
+  return debouncedValue;
+}
+
 type ViewMode = 'grid' | 'list';
 
 export default function LibraryPage() {
@@ -36,6 +48,7 @@ export default function LibraryPage() {
   const [tags, setTags] = useState<TagType[]>([]);
   const [viewMode, setViewMode] = useState<ViewMode>('grid');
   const [searchQuery, setSearchQuery] = useState('');
+  const debouncedSearchQuery = useDebounce(searchQuery, 300);
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [copiedId, setCopiedId] = useState<string | null>(null);
@@ -61,18 +74,20 @@ export default function LibraryPage() {
     loadData();
   }, [loadData]);
 
-  // Filter items based on search and tag
-  const filteredItems = items.filter(item => {
-    if (selectedTag && !item.tags.includes(selectedTag)) return false;
-    if (!searchQuery) return true;
-    
-    const query = searchQuery.toLowerCase();
-    return (
-      item.naturalPrompt.toLowerCase().includes(query) ||
-      item.tags.some(tag => tag.toLowerCase().includes(query)) ||
-      Object.values(item.prompt).some(v => v?.toLowerCase().includes(query))
-    );
-  });
+  // Filter items based on search and tag (using debounced query)
+  const filteredItems = useMemo(() => {
+    return items.filter(item => {
+      if (selectedTag && !item.tags.includes(selectedTag)) return false;
+      if (!debouncedSearchQuery) return true;
+      
+      const query = debouncedSearchQuery.toLowerCase();
+      return (
+        item.naturalPrompt.toLowerCase().includes(query) ||
+        item.tags.some(tag => tag.toLowerCase().includes(query)) ||
+        Object.values(item.prompt).some(v => v?.toLowerCase().includes(query))
+      );
+    });
+  }, [items, selectedTag, debouncedSearchQuery]);
 
   // Handle delete
   const handleDelete = async (id: string) => {

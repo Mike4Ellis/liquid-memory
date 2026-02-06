@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 import { DragDropUpload } from '@/components/upload/DragDropUpload';
 import { StoredImage } from '@/lib/storage';
 import { Sparkles, ImagePlus, Library } from 'lucide-react';
@@ -25,24 +26,33 @@ export default function Home() {
       {/* Header */}
       <header className="border-b border-white/10 backdrop-blur-xl bg-black/20">
         <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-3">
+          <Link href="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
             <div className="p-2 rounded-lg bg-gradient-to-br from-cyan-400/20 to-purple-500/20">
-              <Sparkles className="w-5 h-5 text-cyan-400" />
+              <Sparkles className="w-5 h-5 text-cyan-400" aria-hidden="true" />
             </div>
             <h1 className="text-xl font-semibold text-white">
               Liquid Memory
             </h1>
-          </div>
+          </Link>
           
           <nav className="flex items-center gap-2">
-            <button className="flex items-center gap-2 px-4 py-2 rounded-lg text-white/70 hover:text-white hover:bg-white/5 transition-colors">
-              <ImagePlus className="w-4 h-4" />
+            <Link 
+              href="/"
+              className="flex items-center gap-2 px-4 py-2 rounded-lg text-white/70 hover:text-white hover:bg-white/5 transition-colors"
+              aria-label="Upload page - current page"
+              aria-current="page"
+            >
+              <ImagePlus className="w-4 h-4" aria-hidden="true" />
               <span className="text-sm">Upload</span>
-            </button>
-            <button className="flex items-center gap-2 px-4 py-2 rounded-lg text-white/70 hover:text-white hover:bg-white/5 transition-colors">
-              <Library className="w-4 h-4" />
+            </Link>
+            <Link 
+              href="/library"
+              className="flex items-center gap-2 px-4 py-2 rounded-lg text-white/70 hover:text-white hover:bg-white/5 transition-colors"
+              aria-label="Navigate to library"
+            >
+              <Library className="w-4 h-4" aria-hidden="true" />
               <span className="text-sm">Library</span>
-            </button>
+            </Link>
           </nav>
         </div>
       </header>

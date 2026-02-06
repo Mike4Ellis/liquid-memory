@@ -158,9 +158,10 @@ export function DragDropUpload({ onUploadComplete, onError }: DragDropUploadProp
           <button
             onClick={clearPreview}
             disabled={uploading}
-            className="absolute top-3 right-3 p-2 rounded-full bg-black/50 text-white/80 hover:bg-black/70 hover:text-white transition-colors disabled:opacity-50"
+            className="absolute top-3 right-3 p-2 rounded-full bg-black/50 text-white/80 hover:bg-black/70 hover:text-white transition-colors disabled:opacity-50 focus-visible:ring-2 focus-visible:ring-cyan-400/50"
+            aria-label="Clear preview"
           >
-            <X className="w-4 h-4" />
+            <X className="w-4 h-4" aria-hidden="true" />
           </button>
         </div>
       )}

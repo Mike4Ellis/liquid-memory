@@ -254,6 +254,10 @@ export default function NetworkPage() {
 
     return () => {
       simulation.stop();
+      // Remove all event listeners
+      svg.on('.zoom', null);
+      node.on('click', null).on('dblclick', null);
+      svg.on('click', null);
     };
   }, [graphData, items, selectedNode]);
 
