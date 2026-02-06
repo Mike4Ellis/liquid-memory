@@ -1,13 +1,30 @@
 import { NextRequest, NextResponse } from 'next/server';
 
+// Rate limiting - simple in-memory implementation
+const rateLimitMap = new Map<string, { count: number; resetTime: number }>();
+const RATE_LIMIT = 10; // requests per minute
+const RATE_WINDOW = 60 * 1000; // 1 minute
+
+function checkRateLimit(ip: string): boolean {
+  const now = Date.now();
+  const record = rateLimitMap.get(ip);
+  
+  if (!record || now > record.resetTime) {
+    rateLimitMap.set(ip, { count: 1, resetTime: now + RATE_WINDOW });
+    return true;
+  }
+  
+  if (record.count >= RATE_LIMIT) {
+    return false;
+  }
+  
+  record.count++;
+  return true;
+}
+
 interface VLMessage {
   role: 'system' | 'user';
   content: string | Array<{ type: string; image?: string; text?: string }>;
-}
-
-interface VLRequest {
-  model: string;
-  messages: VLMessage[];
 }
 
 interface ParsedPrompt {
@@ -144,6 +161,15 @@ function parseRawText(text: string): ParsedPrompt {
 
 export async function POST(request: NextRequest) {
   try {
+    // Check rate limit
+    const ip = request.headers.get('x-forwarded-for') || 'unknown';
+    if (!checkRateLimit(ip)) {
+      return NextResponse.json(
+        { error: 'Rate limit exceeded. Please try again later.' },
+        { status: 429 }
+      );
+    }
+
     const body = await request.json();
     const { image, model = 'qwen' } = body;
 
@@ -210,24 +236,4 @@ export async function POST(request: NextRequest) {
       { status: 500 }
     );
   }
-}
-
-// Rate limiting - simple in-memory implementation
-const rateLimitMap = new Map<string, number[]>();
-
-function checkRateLimit(ip: string): boolean {
-  const now = Date.now();
-  const windowMs = 60 * 1000; // 1 minute
-  const maxRequests = 10;
-
-  const requests = rateLimitMap.get(ip) || [];
-  const recentRequests = requests.filter(time => now - time < windowMs);
-
-  if (recentRequests.length >= maxRequests) {
-    return false;
-  }
-
-  recentRequests.push(now);
-  rateLimitMap.set(ip, recentRequests);
-  return true;
 }

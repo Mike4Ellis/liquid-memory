@@ -6,6 +6,26 @@
 import localforage from 'localforage';
 import { generateThumbnail, type ThumbnailResult } from './thumbnail';
 
+// Error handling wrapper
+class StorageError extends Error {
+  constructor(message: string, public cause?: unknown) {
+    super(message);
+    this.name = 'StorageError';
+  }
+}
+
+async function withErrorHandling<T>(
+  operation: () => Promise<T>,
+  errorMessage: string
+): Promise<T> {
+  try {
+    return await operation();
+  } catch (error) {
+    console.error(`${errorMessage}:`, error);
+    throw new StorageError(errorMessage, error);
+  }
+}
+
 // Configure localforage instances
 const imageDb = localforage.createInstance({
   name: 'liquid-memory',
@@ -77,31 +97,33 @@ export interface ExportData {
 // ==================== Image Storage (Legacy) ====================
 
 export async function saveImage(file: File, thumbnailResult?: ThumbnailResult): Promise<StoredImage> {
-  const id = `img_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`;
-  
-  let thumbnail: ThumbnailResult;
-  if (thumbnailResult) {
-    thumbnail = thumbnailResult;
-  } else {
-    thumbnail = await generateThumbnail(file);
-  }
-  
-  const fullImageUrl = await readFileAsDataURL(file);
-  
-  const item: StoredImage = {
-    id,
-    name: file.name,
-    type: file.type,
-    size: file.size,
-    thumbnailUrl: thumbnail.thumbnail,
-    fullImageUrl,
-    thumbnailWidth: thumbnail.width,
-    thumbnailHeight: thumbnail.height,
-    createdAt: Date.now()
-  };
-  
-  await imageDb.setItem(id, item);
-  return item;
+  return withErrorHandling(async () => {
+    const id = `img_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`;
+    
+    let thumbnail: ThumbnailResult;
+    if (thumbnailResult) {
+      thumbnail = thumbnailResult;
+    } else {
+      thumbnail = await generateThumbnail(file);
+    }
+    
+    const fullImageUrl = await readFileAsDataURL(file);
+    
+    const item: StoredImage = {
+      id,
+      name: file.name,
+      type: file.type,
+      size: file.size,
+      thumbnailUrl: thumbnail.thumbnail,
+      fullImageUrl,
+      thumbnailWidth: thumbnail.width,
+      thumbnailHeight: thumbnail.height,
+      createdAt: Date.now()
+    };
+    
+    await imageDb.setItem(id, item);
+    return item;
+  }, 'Failed to save image');
 }
 
 export async function getAllImages(): Promise<StoredImage[]> {
