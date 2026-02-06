@@ -225,3 +225,113 @@
 ---
 
 STATUS: IN_PROGRESS
+
+---
+
+## Phase 4: Cloud Sync (Week 5-8)
+
+### US-015: Supabase Backend Setup
+**Status**: PENDING
+**Acceptance Criteria**:
+- [ ] Supabase project initialized
+- [ ] Database schema migration
+- [ ] Row Level Security (RLS) policies
+- [ ] Storage bucket for images
+- [ ] TypeScript types generated
+
+### US-016: Authentication System
+**Status**: PENDING
+**Acceptance Criteria**:
+- [ ] Anonymous login implementation
+- [ ] Optional email/password auth
+- [ ] OAuth providers (Google, GitHub)
+- [ ] Session management
+- [ ] Protected routes middleware
+
+### US-017: Data Synchronization Engine
+**Status**: PENDING
+**Acceptance Criteria**:
+- [ ] Offline-first architecture
+- [ ] Incremental sync algorithm
+- [ ] Conflict resolution UI
+- [ ] Sync status indicators
+- [ ] Background sync queue
+
+### US-018: End-to-End Encryption
+**Status**: PENDING
+**Acceptance Criteria**:
+- [ ] Client-side encryption (AES-GCM)
+- [ ] Key derivation from user password
+- [ ] Encrypted image upload/download
+- [ ] Zero-knowledge architecture
+
+---
+
+## Phase 5: Mobile App (Week 9-16)
+
+### US-019: React Native Project Setup
+**Status**: PENDING
+**Acceptance Criteria**:
+- [ ] Expo project initialized
+- [ ] Navigation structure (React Navigation)
+- [ ] Theme system matching web
+- [ ] Shared types with web project
+- [ ] Development environment ready
+
+### US-020: Camera & Gallery Integration
+**Status**: PENDING
+**Acceptance Criteria**:
+- [ ] Native camera module
+- [ ] Photo capture with preview
+- [ ] Multi-select gallery picker
+- [ ] Image cropping/editing
+- [ ] Permission handling
+
+### US-021: Core Features Port
+**Status**: PENDING
+**Acceptance Criteria**:
+- [ ] Upload & parse flow
+- [ ] Structured prompt editor (mobile UI)
+- [ ] Creative library (waterfall layout)
+- [ ] Tag management
+- [ ] Search & filter
+
+### US-022: Share Extension
+**Status**: PENDING
+**Acceptance Criteria**:
+- [ ] iOS Share Extension
+- [ ] Android Share Sheet
+- [ ] Deep linking support
+- [ ] Quick save from other apps
+
+### US-023: Push Notifications
+**Status**: PENDING
+**Acceptance Criteria**:
+- [ ] Daily inspiration reminders
+- [ ] Sync completion notifications
+- [ ] Custom notification preferences
+- [ ] Local scheduling
+
+### US-024: App Store Release
+**Status**: PENDING
+**Acceptance Criteria**:
+- [ ] App icons & splash screens
+- [ ] Screenshots for store listing
+- [ ] Privacy policy & terms
+- [ ] TestFlight beta testing
+- [ ] App Store / Play Store submission
+
+---
+
+## Extended Roadmap Summary
+
+| Phase | Duration | Focus |
+|-------|----------|-------|
+| Phase 1-3 | Month 1 | Web MVP + Polish ✅ |
+| Phase 4 | Month 2 | Cloud Sync ☁️ |
+| Phase 5 | Month 3-4 | Mobile App 📱 |
+| **Total** | **4 Months** | Full Stack Product |
+
+---
+
+STATUS: PHASE_3_COMPLETE → PLANNING_PHASE_4

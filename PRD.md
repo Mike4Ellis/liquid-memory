@@ -247,3 +247,222 @@ interface Tag {
 ### 6.2 待决策事项
 - [ ] 是否用 Electron/Tauri 打包桌面应用？（解决文件系统访问问题）
 - [ ] 默认 VL API 选哪个？（Qwen3-VL vs Kimi-k2.5）
+
+---
+
+## 7. 未来规划（Roadmap v2.0）
+
+### 7.1 云端同步 ☁️ （Phase 4）
+
+#### 背景
+原 PRD 明确排除商业化功能，但随着个人使用数据增长，本地存储存在以下痛点：
+- 多设备切换时数据不同步
+- 浏览器清理导致数据丢失风险
+- 无法在手机/平板查看创意库
+
+#### 目标
+提供**可选**的云端同步功能，保持开源免费定位。
+
+#### 技术方案对比
+
+| 方案 | 优点 | 缺点 | 推荐度 |
+|------|------|------|--------|
+| **Supabase** (PostgreSQL) | 开源、 generous free tier、实时订阅 | 学习成本略高 | ⭐⭐⭐⭐⭐ |
+| **Firebase** (Firestore) | 生态成熟、实时同步 | Google 锁定、国内访问不稳定 | ⭐⭐⭐ |
+| **自建后端** (Node.js + MongoDB) | 完全可控 | 运维成本高 | ⭐⭐ |
+
+#### 推荐方案：Supabase
+
+**架构设计**:
+```
+┌─────────────┐     ┌─────────────┐     ┌─────────────┐
+│   Client    │────▶│  Supabase   │────▶│  PostgreSQL │
+│  (Next.js)  │◀────│   (Auth +   │◀────│   + Storage │
+└─────────────┘     │ Realtime)   │     └─────────────┘
+                    └─────────────┘
+```
+
+**数据模型扩展**:
+```typescript
+// 云端 CreativeItem 表
+interface CloudCreativeItem {
+  id: string;
+  user_id: string;           // Supabase Auth UUID
+  local_id: string;          // 本地 IndexedDB ID（用于关联）
+  image_url: string;         // Supabase Storage URL
+  thumbnail_url: string;     // 压缩图 URL
+  prompt: StructuredPrompt;
+  natural_prompt: string;
+  tags: string[];
+  sync_status: 'synced' | 'pending' | 'conflict';
+  created_at: string;        // ISO 8601
+  updated_at: string;
+  deleted_at: string | null; // 软删除
+}
+
+// 同步日志表（用于离线队列）
+interface SyncLog {
+  id: string;
+  user_id: string;
+  operation: 'create' | 'update' | 'delete';
+  table: string;
+  record_id: string;
+  payload: JSON;
+  created_at: string;
+  synced_at: string | null;
+}
+```
+
+**核心功能**:
+
+| 功能 | 描述 | 优先级 |
+|------|------|--------|
+| 匿名登录 | 无需邮箱，一键生成临时账户 | P0 |
+| 数据加密 | 端到端加密（用户密码派生密钥） | P1 |
+| 增量同步 | 只传输变更数据，节省流量 | P0 |
+| 冲突解决 | 时间戳优先 + 手动合并 UI | P1 |
+| 离线支持 | 本地操作，联网后自动同步 | P0 |
+| 多端实时 | WebSocket 推送变更到其他设备 | P2 |
+
+**隐私策略**:
+- 所有图片在上传前可选择加密（AES-GCM）
+- 服务端无法解密用户数据
+- 支持「仅元数据同步」模式（图片保留本地）
+
+**定价（参考）**:
+- 免费版：500MB 存储，1000 条记录
+- Pro 版 ($5/月)：10GB 存储，无限记录
+- 自托管版：完全免费，需自行部署 Supabase
+
+---
+
+### 7.2 移动端 App 📱 （Phase 5）
+
+#### 背景
+手机是灵感收集的主要场景，但 Web App 在移动端的体验受限：
+- 无法接收推送通知
+- 分享菜单集成困难
+- 相机调用体验不佳
+
+#### 目标
+开发原生级体验的跨平台移动应用。
+
+#### 技术选型
+
+| 方案 | 优点 | 缺点 | 选择 |
+|------|------|------|------|
+| **React Native (Expo)** | 一套代码双端、热更新、生态成熟 | 性能略低于纯原生 | ✅ 推荐 |
+| **Flutter** | 性能好、UI 一致 | Dart 学习成本、包体积大 | 备选 |
+| **PWA + Capacitor** | Web 技术栈复用 | 原生能力受限 | 不推荐 |
+
+#### 架构设计
+
+```
+┌─────────────────────────────────────────┐
+│           Mobile App (RN + Expo)         │
+│  ┌──────────┐ ┌──────────┐ ┌──────────┐ │
+│  │  Camera  │ │  Gallery │ │  Share   │ │
+│  └──────────┘ └──────────┘ └──────────┘ │
+│              ┌──────────────┐            │
+│              │  Sync Engine │            │
+│              │  (Offline-First)          │
+│              └──────────────┘            │
+└─────────────────────────────────────────┘
+                   │
+                   ▼
+┌─────────────────────────────────────────┐
+│         Supabase Backend                │
+│    (Auth + Database + Storage)          │
+└─────────────────────────────────────────┘
+```
+
+**核心功能**:
+
+| 模块 | 功能 | 说明 |
+|------|------|------|
+| 📷 相机 | 拍照即解析 | 调用原生相机，拍完直接 AI 分析 |
+| 🖼️ 相册 | 批量导入 | 多选照片，后台批量处理 |
+| 🔗 分享扩展 | 从其他 App 导入 | 支持微信、微博、浏览器等分享入口 |
+| 🔔 推送 | 每日灵感 | 基于词汇网络推荐相关提示词 |
+| 🌐 离线模式 | 无网可用 | 本地 SQLite，有网自动同步 |
+| 🔍 以图搜图 | 相似作品发现 | 向量搜索（pgvector） |
+
+**与 Web 端的功能对齐**:
+
+| Web 功能 | Mobile 状态 | 备注 |
+|----------|-------------|------|
+| 上传解析 | ✅ 完整支持 | 相机 + 相册 |
+| 结构化编辑 | ✅ 完整支持 | 适配小屏的折叠面板 |
+| 创意库 | ✅ 完整支持 | 瀑布流布局 |
+| 标签管理 | ✅ 完整支持 | 底部 Sheet 弹窗 |
+| 词汇网络 | ⚠️ 简化版 | 2D 力导向图，暂不支持 3D 旋转 |
+| AI 生成 | ⚠️ 仅查看 | 手机端暂不集成生成（耗流量） |
+| 数据导出 | ❌ 暂不支持 | 复杂操作建议在 Web 端完成 |
+
+**UI 适配策略**:
+
+```typescript
+// 响应式断点
+const breakpoints = {
+  mobile: 0,      // 手机竖屏 (< 480px)
+  tablet: 480,    // 手机横屏/平板 (480-768px)
+  desktop: 768,   // 平板横屏/桌面 (> 768px)
+};
+
+// 组件差异化渲染
+function PromptEditor({ data }: { data: ParsedPrompt }) {
+  const { width } = useWindowDimensions();
+  
+  if (width < 480) {
+    return <MobilePromptEditor data={data} />;  // 折叠面板
+  }
+  
+  return <DesktopPromptEditor data={data} />;   // 左右分栏
+}
+```
+
+**开发计划**:
+
+| 阶段 | 周期 | 里程碑 |
+|------|------|--------|
+| M1 基础框架 | 2周 | Expo 项目搭建，导航结构，主题系统 |
+| M2 核心功能 | 3周 | 相机/相册、解析、创意库列表 |
+| M3 同步引擎 | 2周 | 离线优先架构，Supabase 集成 |
+| M4 高级功能 | 2周 | 分享扩展、推送通知、生物识别锁 |
+| M5 打磨发布 | 1周 | TestFlight 内测，应用商店审核 |
+
+**发布渠道**:
+- iOS: App Store（TestFlight 内测先行）
+- Android: Google Play + F-Droid（开源版）
+
+---
+
+## 8. 商业模式探讨（可选）
+
+虽然定位为开源个人工具，但可持续运营需要合理的商业模式：
+
+### 8.1 开源核心 + 云服务增值
+- **Core**: 本地优先，完全免费，MIT 协议
+- **Cloud**: 可选同步服务，freemium 定价
+- **Enterprise**: 私有化部署支持（按需收费）
+
+### 8.2 创作者经济
+- **模板市场**: 优质提示词模板交易抽成（10%）
+- **API 代理**: 为开发者提供稳定的 VL API 聚合服务
+- **品牌合作**: 与 Midjourney、即梦等平台的分成合作
+
+### 8.3 社区捐赠
+- GitHub Sponsors
+- Open Collective
+- 加密货币捐赠（BTC/ETH）
+
+---
+
+## 9. 附录 B：技术债务追踪
+
+| 债务项 | 影响 | 偿还计划 |
+|--------|------|----------|
+| IndexedDB 迁移到 SQLite | 中 | Phase 4 云端同步时统一处理 |
+| D3.js 升级到 v7 | 低 | 词汇网络重构时顺便升级 |
+| 测试覆盖率不足 | 高 | Phase 3 补充 E2E 测试 |
+| 缺少国际化 | 低 | Phase 5 移动端时考虑 i18n |
