@@ -101,13 +101,29 @@
   - [x] Quick actions on hover (copy, delete)
   - [x] Responsive layout
 
-#### ⏳ US-008: 标签系统
-- **状态**: pending
+#### ✅ US-008: 标签系统
+- **状态**: completed
+- **负责人**: Gremins
 - **依赖**: US-006
+- **验收标准**:
+  - [x] Tag management interface
+  - [x] Display tags with colors and counts
+  - [x] Rename tags functionality
+  - [x] Delete tags with confirmation
+  - [x] View items by tag
+  - [x] Responsive dark theme design
 
-#### ⏳ US-009: 搜索与筛选功能
-- **状态**: pending
+#### ✅ US-009: 搜索与筛选功能
+- **状态**: completed
+- **负责人**: subagent
 - **依赖**: US-007, US-008
+- **验收标准**:
+  - [x] Fuzzy search across content and tags
+  - [x] Filter by tag
+  - [x] Grid/List view toggle
+  - [x] Empty state handling
+  - [x] Copy prompt action
+  - [x] Export data functionality
 
 ### Phase 2: Advanced Features
 
