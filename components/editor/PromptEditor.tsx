@@ -3,7 +3,7 @@
 import { useState, useCallback, useMemo } from 'react';
 import { Copy, Download, FileJson, Eye, EyeOff, Sparkles, Check } from 'lucide-react';
 
-interface ParsedPrompt {
+export interface ParsedPrompt {
   subject?: string;
   environment?: string;
   composition?: string;
@@ -18,6 +18,7 @@ interface PromptEditorProps {
   initialData?: ParsedPrompt;
   imageUrl?: string;
   onSave?: (data: ParsedPrompt) => void;
+  onChange?: (data: ParsedPrompt) => void;
 }
 
 const DIMENSIONS = [

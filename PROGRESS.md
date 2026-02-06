@@ -127,13 +127,30 @@
 
 ### Phase 2: Advanced Features
 
-#### ⏳ US-010: 词汇网络可视化
-- **状态**: pending
+#### ✅ US-010: 词汇网络可视化
+- **状态**: completed
+- **负责人**: Gremins
 - **依赖**: US-009
+- **验收标准**:
+  - [x] D3.js force-directed graph
+  - [x] Extract keywords from prompts
+  - [x] Build co-occurrence graph
+  - [x] Node size = frequency, edge thickness = co-occurrence
+  - [x] Click to see related items
+  - [x] Double-click to search
+  - [x] Zoom and pan controls
 
-#### ⏳ US-011: 即梦 API 集成
-- **状态**: pending
+#### ✅ US-011: AI 图像生成
+- **状态**: completed
+- **负责人**: Gremins
 - **依赖**: US-005
+- **验收标准**:
+  - [x] Image generation interface
+  - [x] Prompt editor integration
+  - [x] Size and style parameters
+  - [x] Seed control
+  - [x] Results gallery
+  - [x] Save to library
 
 #### ⏳ US-012: 数据导入导出
 - **状态**: pending
