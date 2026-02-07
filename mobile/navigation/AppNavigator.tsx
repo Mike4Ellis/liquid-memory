@@ -12,6 +12,7 @@ import HomeScreen from '../screens/HomeScreen';
 import CameraScreen from '../screens/CameraScreen';
 import LibraryScreen from '../screens/LibraryScreen';
 import SettingsScreen from '../screens/SettingsScreen';
+import PromptEditorScreen from '../screens/PromptEditorScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -51,6 +52,11 @@ export default function AppNavigator() {
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name="Main" component={MainTabs} />
+        <Stack.Screen 
+          name="PromptEditor" 
+          component={PromptEditorScreen}
+          options={{ headerShown: true, title: 'Edit Prompt', headerStyle: { backgroundColor: colors.bgPrimary }, headerTintColor: colors.textPrimary }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
