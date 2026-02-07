@@ -32,6 +32,7 @@ function MainTabs() {
           }
           return <Ionicons name={iconName} size={size} color={color} />;
         },
+        tabBarAccessibilityLabel: route.name,
         tabBarActiveTintColor: colors.accentCyan,
         tabBarInactiveTintColor: colors.textSecondary,
         tabBarStyle: { backgroundColor: colors.bgPrimary, borderTopColor: colors.border },
@@ -39,10 +40,26 @@ function MainTabs() {
         headerTintColor: colors.textPrimary,
       })}
     >
-      <Tab.Screen name="Home" component={HomeScreen} />
-      <Tab.Screen name="Camera" component={CameraScreen} />
-      <Tab.Screen name="Library" component={LibraryScreen} />
-      <Tab.Screen name="Settings" component={SettingsScreen} />
+      <Tab.Screen 
+        name="Home" 
+        component={HomeScreen}
+        options={{ tabBarAccessibilityLabel: 'Home tab' }}
+      />
+      <Tab.Screen 
+        name="Camera" 
+        component={CameraScreen}
+        options={{ tabBarAccessibilityLabel: 'Camera tab' }}
+      />
+      <Tab.Screen 
+        name="Library" 
+        component={LibraryScreen}
+        options={{ tabBarAccessibilityLabel: 'Library tab' }}
+      />
+      <Tab.Screen 
+        name="Settings" 
+        component={SettingsScreen}
+        options={{ tabBarAccessibilityLabel: 'Settings tab' }}
+      />
     </Tab.Navigator>
   );
 }

@@ -6,6 +6,7 @@
 import * as Notifications from 'expo-notifications';
 import * as Device from 'expo-device';
 import { Platform } from 'react-native';
+import { saveSecurely, getSecurely, KEYS } from './secureStorage';
 
 // Configure notification handler
 Notifications.setNotificationHandler({
@@ -100,14 +101,40 @@ export async function cancelDailyNotifications(): Promise<void> {
 
 /**
  * Get push token for server-side notifications
+ * Securely stores the token in Keychain/Keystore
  */
 export async function getPushToken(): Promise<string | null> {
   try {
+    // Check if we already have a stored token
+    const storedToken = await getSecurely(KEYS.PUSH_TOKEN);
+    if (storedToken) {
+      return storedToken;
+    }
+
+    // Get new token
     const token = (await Notifications.getExpoPushTokenAsync()).data;
+    
+    // Store securely
+    await saveSecurely(KEYS.PUSH_TOKEN, token);
+    
     return token;
   } catch (error) {
     console.error('Failed to get push token:', error);
     return null;
+  }
+}
+
+/**
+ * Clear stored push token (e.g., on logout)
+ */
+export async function clearPushToken(): Promise<void> {
+  try {
+    const { value } = await Notifications.getExpoPushTokenAsync();
+    if (value) {
+      await deleteSecurely(KEYS.PUSH_TOKEN);
+    }
+  } catch (error) {
+    console.error('Failed to clear push token:', error);
   }
 }
 

@@ -60,8 +60,31 @@ export default function PromptEditorScreen() {
     setTags(tags.filter(tag => tag !== tagToRemove));
   };
 
-  const saveItem = () => {
-    Alert.alert('Saved', 'Item saved to your library!');
+  const [isSaving, setIsSaving] = useState(false);
+
+  const validatePrompt = (): boolean => {
+    const hasContent = Object.values(prompt).some(value => value.trim().length > 0);
+    if (!hasContent) {
+      Alert.alert('Validation Error', 'Please fill in at least one field before saving.');
+      return false;
+    }
+    return true;
+  };
+
+  const saveItem = async () => {
+    if (!validatePrompt()) return;
+    
+    setIsSaving(true);
+    try {
+      // TODO: Save to local storage / sync with cloud
+      await new Promise(resolve => setTimeout(resolve, 500));
+      Alert.alert('Success', 'Item saved to your library!');
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Failed to save item';
+      Alert.alert('Error', errorMessage);
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   return (
