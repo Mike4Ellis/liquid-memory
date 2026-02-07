@@ -80,12 +80,15 @@ export default function SettingsScreen() {
           <Text style={styles.sectionTitle}>{section.title}</Text>
           <View style={styles.card}>
             {section.items.map((item, itemIndex) => (
-              <View
+              <TouchableOpacity
                 key={itemIndex}
                 style={[
                   styles.row,
                   itemIndex < section.items.length - 1 && styles.rowBorder,
                 ]}
+                onPress={'action' in item ? item.action : undefined}
+                accessibilityLabel={item.label}
+                accessibilityRole={typeof item.value === 'boolean' ? 'switch' : 'button'}
               >
                 <View style={styles.rowLeft}>
                   <Ionicons name={item.icon} size={20} color={colors.accentCyan} />
@@ -110,7 +113,11 @@ export default function SettingsScreen() {
         </View>
       ))}
 
-      <TouchableOpacity style={styles.logoutButton}>
+      <TouchableOpacity 
+        style={styles.logoutButton}
+        accessibilityLabel="Sign out"
+        accessibilityRole="button"
+      >
         <Text style={styles.logoutText}>Sign Out</Text>
       </TouchableOpacity>
     </ScrollView>

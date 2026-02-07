@@ -97,7 +97,11 @@ export default function PromptEditorScreen() {
             {naturalPrompt || 'Fill in the fields below to generate a prompt...'}
           </Text>
         </View>
-        <TouchableOpacity style={styles.copyButton}>
+        <TouchableOpacity 
+          style={styles.copyButton}
+          accessibilityLabel="Copy prompt to clipboard"
+          accessibilityRole="button"
+        >
           <Ionicons name="copy" size={18} color={colors.bgPrimary} />
           <Text style={styles.copyButtonText}>Copy to Clipboard</Text>
         </TouchableOpacity>
@@ -133,7 +137,7 @@ export default function PromptEditorScreen() {
             onChangeText={setNewTag}
             onSubmitEditing={addTag}
           />
-          <TouchableOpacity style={styles.addTagButton} onPress={addTag}>
+          <TouchableOpacity style={styles.addTagButton} onPress={addTag} accessibilityLabel="Add tag" accessibilityRole="button">
             <Ionicons name="add" size={24} color={colors.bgPrimary} />
           </TouchableOpacity>
         </View>
@@ -148,7 +152,7 @@ export default function PromptEditorScreen() {
       </View>
 
       {/* Save Button */}
-      <TouchableOpacity style={styles.saveButton} onPress={saveItem}>
+      <TouchableOpacity style={styles.saveButton} onPress={saveItem} accessibilityLabel="Save to library" accessibilityRole="button">
         <Text style={styles.saveButtonText}>Save to Library</Text>
       </TouchableOpacity>
     </ScrollView>
