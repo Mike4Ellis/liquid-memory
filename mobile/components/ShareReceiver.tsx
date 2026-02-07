@@ -63,13 +63,23 @@ export default function ShareReceiver() {
         <Image source={{ uri: sharedImage.uri }} style={styles.image} />
         
         <View style={styles.actions}>
-          <TouchableOpacity style={[styles.button, styles.dismissButton]} onPress={dismiss}>
-            <Ionicons name="close" size={20} color={colors.textPrimary} />
+          <TouchableOpacity 
+            style={[styles.button, styles.dismissButton]} 
+            onPress={dismiss}
+            accessibilityLabel="Dismiss shared image"
+            accessibilityRole="button"
+          >
+            <Ionicons name="close" size={20} color={colors.textPrimary} accessibilityLabel="Close icon" />
             <Text style={styles.buttonText}>Dismiss</Text>
           </TouchableOpacity>
           
-          <TouchableOpacity style={[styles.button, styles.saveButton]} onPress={saveToLibrary}>
-            <Ionicons name="save" size={20} color={colors.bgPrimary} />
+          <TouchableOpacity 
+            style={[styles.button, styles.saveButton]} 
+            onPress={saveToLibrary}
+            accessibilityLabel="Save and analyze image"
+            accessibilityRole="button"
+          >
+            <Ionicons name="save" size={20} color={colors.bgPrimary} accessibilityLabel="Save icon" />
             <Text style={[styles.buttonText, styles.saveButtonText]}>Save & Analyze</Text>
           </TouchableOpacity>
         </View>
